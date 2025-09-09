@@ -1,3 +1,4 @@
+# config/lsp/fidget.nix
 {
   plugins.fidget = {
     enable = true;

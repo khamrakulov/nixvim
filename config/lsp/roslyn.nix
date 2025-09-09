@@ -1,3 +1,4 @@
+# config/lsp/roslyn.nix
 { lib, pkgs, ... }:
 {
   lsp.servers.roslyn_ls = {

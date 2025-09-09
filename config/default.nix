@@ -81,7 +81,7 @@
       # Debuggers
       netcoredbg # C# debugger
       asm-lsp # Assembly LSP
-      bashdb # Bash debugger
+      # bashdb # Bash debugger
       delve # Go debugger
 
     ];
