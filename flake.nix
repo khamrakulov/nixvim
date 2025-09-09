@@ -9,40 +9,7 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, nixvim, ... }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [
-          # Override bashdb to fix version check and file path
-          (final: prev: {
-            bashdb = prev.bashdb.overrideAttrs (oldAttrs: {
-              patches = (oldAttrs.patches or []) ++ [
-                # Patch to relax Bash version check
-                (final.writeFile {
-                  name = "bashdb-bash-version.patch";
-                  text = ''
-                    --- a/configure
-                    +++ b/configure
-                    @@ -3540,7 +3540,7 @@ if test "x$BASHVERS" != x; then
-                         case $BASHVERS in
-                           4.0) echo "This package does not work with Bash $BASHVERS"
-                                exit 1 ;;
-                    -      5.0) ;;
-                    +      5.*) ;;
-                           *) echo "This package is only known to work with Bash 5.0"
-                              exit 1 ;;
-                         esac
-                  '';
-                })
-              ];
-              # Fix path to bashdb-main.inc
-              postPatch = ''
-                substituteInPlace configure \
-                  --replace "/usr/local/bashdb/bashdb-main.inc" "${prev.bashdb}/share/bashdb/bashdb-main.inc"
-              '';
-            });
-          })
-        ];
-      };
+      pkgs = import nixpkgs { inherit system; };
       config = import ./config;
       nvim = nixvim.legacyPackages.${system}.makeNixvimWithModule {
         inherit pkgs;
